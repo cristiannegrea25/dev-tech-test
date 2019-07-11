@@ -29,7 +29,7 @@ namespace CarAPI.Web
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public IServiceProvider ConfigureServices(IServiceCollection services)
 		{
-			services.AddAutoMapper();
+			services.AddAutoMapper(typeof(Startup));
 
 			services.Configure<CookiePolicyOptions>(options =>
 			{
@@ -38,16 +38,10 @@ namespace CarAPI.Web
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 			});
 
-			// Adding EF Core for SQLite
-			services.AddDbContext<CarAPIContext>(options =>
-			{
-				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-			});
-
 			services.AddMvc(options =>
 				{
 					var serviceProvider = services.BuildServiceProvider();
-					var logger = serviceProvider.GetService<Infrastructure.Logging.ILogger<UnhandledExceptionFilter>>();
+					var logger = serviceProvider.GetService<ILogger<UnhandledExceptionFilter>>();
 					options.Filters.Add(new UnhandledExceptionFilter(logger));
 				}).SetCompatibilityVersion(CompatibilityVersion.Version_2_2); ;
 
@@ -64,12 +58,8 @@ namespace CarAPI.Web
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
-			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-			loggerFactory.AddDebug();
-
-			loggerFactory.AddNLog();
 			env.ConfigureNLog("nlog.config");
 
 			if (env.IsDevelopment())

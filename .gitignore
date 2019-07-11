@@ -28,3 +28,4 @@
 /CarAPI.Web/CarAPI.Web.Tests/obj/Debug/netcoreapp2.2/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
 /CarAPI.Web/CarAPI.Web.Tests/obj/project.assets.json
 /CarAPI.Web/.vs/config/applicationhost.config
+/CarAPI.Web/CarAPI.Web.Tests/bin/Debug/netcoreapp2.2/nlog.config

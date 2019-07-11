@@ -52,10 +52,5 @@ namespace CarAPI.Web.Services
 			_carRepository.DeleteCar(car);
 			_carRepository.Save();
 		}
-
-		public void Dispose()
-		{
-			_carRepository.Dispose();
-		}
 	}
 }

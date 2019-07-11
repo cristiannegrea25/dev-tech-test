@@ -1,16 +1,14 @@
 ﻿using CarAPI.Web.Models.Gateway;
 using CarAPI.Web.Repositories.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace CarAPI.Web.Repositories
 {
-	public class CarRepository : ICarRepository, IDisposable
+	public class CarRepository : ICarRepository
 	{
 		private CarAPIContext _context;
-		private bool disposed = false;
 
 		public CarRepository(CarAPIContext context)
 		{
@@ -48,24 +46,6 @@ namespace CarAPI.Web.Repositories
 		public void Save()
 		{
 			_context.SaveChanges();
-		}
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!disposed)
-			{
-				if (disposing)
-				{
-					_context.Dispose();
-				}
-			}
-			disposed = true;
 		}
 	}
 }

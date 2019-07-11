@@ -14,7 +14,5 @@ namespace CarAPI.Web.Services
 		void UpdateCar(CarViewModel car);
 
 		void DeleteCar(int Id);
-
-		void Dispose();
 	}
 }

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using CarAPI.Web.Repositories.Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using StructureMap;
 
@@ -15,6 +17,8 @@ namespace CarAPI.Web.Registries
 				_.AddAllTypesOf<Profile>();
 				_.WithDefaultConventions();
 			});
+
+			For<CarAPIContext>().Use(new CarAPIContext(new DbContextOptions<CarAPIContext>()));
 		}
 	}
 }

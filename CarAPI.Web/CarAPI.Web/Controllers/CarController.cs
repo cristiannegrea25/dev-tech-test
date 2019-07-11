@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using CarAPI.Web.Infrastructure.Logging;
 using System.Collections.Generic;
 using CarAPI.Web.Services;
 using CarAPI.Web.Models.Domain;
+using Microsoft.Extensions.Logging;
 
 namespace CarAPI.Web.Controllers
 {
 	[Route("api/[controller]")]
+	[Produces("application/json")]
 	public class CarController : Controller
 	{
 		private readonly ICarService _carService;
@@ -19,33 +20,37 @@ namespace CarAPI.Web.Controllers
 		}
 
 		[HttpGet]
+		[Route("getcars")]
 		public IEnumerable<CarViewModel> GetCars()
 		{
-			_logger.Info("Getting cars...");
+			_logger.LogInformation("Getting cars...");
 
 			return _carService.GetAllCars();
 		}
 
 		[HttpPost]
-		public void InsertCar(CarViewModel car)
+		[Route("insertcar")]
+		public void InsertCar([FromBody] CarViewModel car)
 		{
-			_logger.Info("Inserting car record...");
+			_logger.LogInformation("Inserting car record...");
 
 			_carService.InsertCar(car);
 		}
 
 		[HttpPut]
-		public void UpdateCar(CarViewModel car)
+		[Route("updatecar")]
+		public void UpdateCar([FromBody] CarViewModel car)
 		{
-			_logger.Info("Updating car record...");
+			_logger.LogInformation("Updating car record...");
 
 			_carService.UpdateCar(car);
 		}
 
 		[HttpDelete]
+		[Route("deletecar/{carId}")]
 		public void DeleteCar(int carId)
 		{
-			_logger.Info("Deleting car record...");
+			_logger.LogInformation("Deleting car record...");
 
 			_carService.DeleteCar(carId);
 		}

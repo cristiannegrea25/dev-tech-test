@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
-using CarAPI.Web.Infrastructure.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace CarAPI.Web.Infrastructure.ExceptionHandling
 {
@@ -18,7 +18,7 @@ namespace CarAPI.Web.Infrastructure.ExceptionHandling
             var exceptionMessage = context.Exception.Message;
             var logMessage = $"Exception Message: {exceptionMessage} \nStackTrace: {exceptionStackTrace}";
 
-            _logger.Error(logMessage);
+            _logger.LogError(logMessage);
         }
     }
 }

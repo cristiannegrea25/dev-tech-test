@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using AutoMapper;
+using AutoMapper.Configuration;
 using CarAPI.Web.Mapping;
 using CarAPI.Web.Models.Domain;
 using CarAPI.Web.Models.Gateway;
@@ -16,7 +17,10 @@ namespace CarAPI.Web.Tests.Mapping
 		public void Setup()
 		{
 			Mapper.Reset();
-			Mapper.Initialize(x => x.AddProfile(new CarProfile()));
+			var config = new MapperConfigurationExpression();
+			config.AddProfile(new CarProfile());
+
+			Mapper.Initialize(config);
 
 			_referenceFixture = new Fixture();
 		}

@@ -1,10 +1,9 @@
 ﻿using CarAPI.Web.Models.Gateway;
-using System;
 using System.Collections.Generic;
 
 namespace CarAPI.Web.Repositories
 {
-	public interface ICarRepository : IDisposable
+	public interface ICarRepository
 	{
 		Car GetCar(int id);
 
