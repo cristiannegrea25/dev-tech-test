@@ -1,5 +1,3 @@
-using System;
-
 namespace CarAPI.Web.Models
 {
 	public class ErrorViewModel

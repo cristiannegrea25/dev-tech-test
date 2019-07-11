@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CarAPI.Web.Infrastructure.Logging;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using CarAPI.Web.Services;
 using CarAPI.Web.Models.Domain;
 
@@ -20,29 +19,35 @@ namespace CarAPI.Web.Controllers
 		}
 
 		[HttpGet]
-		public async Task<List<CarViewModel>> GetCars()
+		public IEnumerable<CarViewModel> GetCars()
 		{
 			_logger.Info("Getting cars...");
 
-			return new List<CarViewModel>();
+			return _carService.GetAllCars();
 		}
 
 		[HttpPost]
-		public async void InsertCar()
+		public void InsertCar(CarViewModel car)
 		{
 			_logger.Info("Inserting car record...");
+
+			_carService.InsertCar(car);
 		}
 
 		[HttpPut]
-		public async void UpdateCar()
+		public void UpdateCar(CarViewModel car)
 		{
 			_logger.Info("Updating car record...");
+
+			_carService.UpdateCar(car);
 		}
 
 		[HttpDelete]
-		public async void DeleteCar(int id)
+		public void DeleteCar(int carId)
 		{
 			_logger.Info("Deleting car record...");
+
+			_carService.DeleteCar(carId);
 		}
 	}
 }

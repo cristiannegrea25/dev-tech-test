@@ -8,8 +8,8 @@ namespace CarAPI.Web.Mapping
 	{
 		public CarProfile()
 		{
-			CreateMap<CarViewModel, CarGatewayModel>();
-			CreateMap<CarGatewayModel, CarViewModel>();
+			CreateMap<CarViewModel, Car>();
+			CreateMap<Car, CarViewModel>();
 		}
 	}
 }

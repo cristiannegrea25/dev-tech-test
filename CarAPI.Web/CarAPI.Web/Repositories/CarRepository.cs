@@ -1,6 +1,71 @@
-﻿namespace CarAPI.Web.Repositories
+﻿using CarAPI.Web.Models.Gateway;
+using CarAPI.Web.Repositories.Context;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace CarAPI.Web.Repositories
 {
-	public class CarRepository : ICarRepository
+	public class CarRepository : ICarRepository, IDisposable
 	{
+		private CarAPIContext _context;
+		private bool disposed = false;
+
+		public CarRepository(CarAPIContext context)
+		{
+			_context = context;
+			_context.Database.EnsureCreated();
+		}
+
+		public Car GetCar(int carId)
+		{
+			return _context.Cars.Find(carId);
+		}
+
+		public IEnumerable<Car> GetCars()
+		{
+			var cars = _context.Cars.ToList();
+
+			return cars;
+		}
+
+		public void InsertCar(Car car)
+		{
+			_context.Cars.Add(car);
+		}
+
+		public void UpdateCar(Car car)
+		{
+			_context.Entry(car).State = EntityState.Modified;
+		}
+
+		public void DeleteCar(Car car)
+		{
+			_context.Cars.Remove(car);
+		}
+
+		public void Save()
+		{
+			_context.SaveChanges();
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!disposed)
+			{
+				if (disposing)
+				{
+					_context.Dispose();
+				}
+			}
+			disposed = true;
+		}
 	}
 }

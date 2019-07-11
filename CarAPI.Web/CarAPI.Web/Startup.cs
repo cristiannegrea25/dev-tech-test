@@ -1,10 +1,12 @@
 using AutoMapper;
 using CarAPI.Web.Infrastructure.ExceptionHandling;
 using CarAPI.Web.Registries;
+using CarAPI.Web.Repositories.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -36,12 +38,18 @@ namespace CarAPI.Web
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 			});
 
-			services.AddMvc(options =>
+			// Adding EF Core for SQLite
+			services.AddDbContext<CarAPIContext>(options =>
 			{
-				var serviceProvider = services.BuildServiceProvider();
-				var logger = serviceProvider.GetService<Infrastructure.Logging.ILogger<UnhandledExceptionFilter>>();
-				options.Filters.Add(new UnhandledExceptionFilter(logger));
-			}).SetCompatibilityVersion(CompatibilityVersion.Version_2_2); ;
+				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+			});
+
+			services.AddMvc(options =>
+				{
+					var serviceProvider = services.BuildServiceProvider();
+					var logger = serviceProvider.GetService<Infrastructure.Logging.ILogger<UnhandledExceptionFilter>>();
+					options.Filters.Add(new UnhandledExceptionFilter(logger));
+				}).SetCompatibilityVersion(CompatibilityVersion.Version_2_2); ;
 
 			var container = ConfigureIOC(services);
 			return container;
