@@ -28,10 +28,13 @@ namespace CarAPI.Web.Tests.Mapping
 		[Test]
 		public void CarViewModel_To_CarGatewayModel()
 		{
+			// Arrange
 			CarViewModel viewModel = _referenceFixture.Create<CarViewModel>();
 
+			// Act
 			Car gatewayModel = Mapper.Map<Car>(viewModel);
 
+			// Assert
 			Assert.Multiple(() => {
 				Assert.AreEqual(viewModel.Id, gatewayModel.Id);
 				Assert.AreEqual(viewModel.Make.Name, gatewayModel.Make);
@@ -44,10 +47,13 @@ namespace CarAPI.Web.Tests.Mapping
 		[Test]
 		public void CarGatewayModel_To_CarViewModel()
 		{
+			// Arrange
 			Car viewModel = _referenceFixture.Create<Car>();
 
+			// Act
 			CarViewModel gatewayModel = Mapper.Map<CarViewModel>(viewModel);
 
+			// Assert
 			Assert.Multiple(() => {
 				Assert.AreEqual(viewModel.Id, gatewayModel.Id);
 				Assert.AreEqual(viewModel.Make, gatewayModel.Make.Name);

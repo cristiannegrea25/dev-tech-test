@@ -36,6 +36,9 @@ namespace CarAPI.Web.Tests.Services
 			_carRepository.Setup(x => x.GetCars())
 						  .Returns(GetMockCarsData);
 
+			_datamuseRepository.Setup(x => x.GetDatamuseWords(It.IsAny<string>()))
+						  .ReturnsAsync(GetMockDatamuseResponse);
+
 			_carRepository.Setup(x => x.GetCar(It.IsAny<int>()))
 						  .Returns(GetMockCarsData().First());
 
@@ -45,18 +48,63 @@ namespace CarAPI.Web.Tests.Services
 		[Test]
 		public async Task Should_Retrieve_List_Of_Cars()
 		{
+			// Arrange
+			var expectedValue = 3;
+			
+			// Act
 			var cars = await _classUnderTest.GetAllCars();
 
-			Assert.True(cars.Count().Equals(3));
+			// Arrange
+			Assert.True(cars.Count().Equals(expectedValue));
 		}
 
 		[Test]
 		public async Task Should_Retrieve_Single_Car_Based_On_Id()
 		{
 			var carId = 1;
+			
+			// Act
 			var car = await _classUnderTest.GetCar(carId);
 
 			Assert.NotNull(car);
+		}
+
+		[Test]
+		public async Task Should_Retrieve_Datamuse_Responses_For_List_Of_Cars()
+		{
+			// Arrange
+			var expectedValue = "testtttt, testttt, testt";
+
+			// Act
+			var cars = await _classUnderTest.GetAllCars();
+
+			// Arrange
+			Assert.That(cars.All(x => x.SimilarWords.Equals(expectedValue)));
+		}
+
+		[Test]
+		public async Task Should_Retrieve_Datamuse_Response_For_Single_Car_Based_On_Id()
+		{
+			// Arrange
+			var carId = 1;
+			var expectedValue = "testtttt, testttt, testt";
+
+			// Act
+			var car = await _classUnderTest.GetCar(carId);
+
+			// Assert
+			Assert.AreEqual(expectedValue, car.SimilarWords);
+		}
+
+		private List<DatamuseResponse> GetMockDatamuseResponse()
+		{
+			var listOfDatamuseResponses = new List<DatamuseResponse> {
+				new DatamuseResponse { Word = "testt", Score = 123 },
+				new DatamuseResponse { Word = "testttt", Score = 1234 },
+				new DatamuseResponse { Word = "testtttt", Score = 12345 }
+			};
+
+			return listOfDatamuseResponses;
 		}
 
 		private IEnumerable<Car> GetMockCarsData()
