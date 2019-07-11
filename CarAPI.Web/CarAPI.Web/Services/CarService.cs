@@ -3,30 +3,49 @@ using CarAPI.Web.Models.Domain;
 using CarAPI.Web.Models.Gateway;
 using CarAPI.Web.Repositories;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CarAPI.Web.Services
 {
 	public class CarService : ICarService
 	{
-        private readonly ICarRepository _carRepository;
+		private readonly ICarRepository _carRepository;
+		private readonly IDatamuseRepository _datamuseRepository;
 		private readonly IMapper _mapper;
 
-		public CarService(ICarRepository carRepository, IMapper mapper)
+		public CarService(ICarRepository carRepository, IDatamuseRepository datamuseRepository, IMapper mapper)
 		{
 			_carRepository = carRepository;
+			_datamuseRepository = datamuseRepository;
 			_mapper = mapper;
 		}
 
-		public IEnumerable<CarViewModel> GetAllCars()
+		public async Task<IEnumerable<CarViewModel>> GetAllCars()
 		{
 			var gatewayCars = _carRepository.GetCars();
-			return _mapper.Map<IEnumerable<CarViewModel>>(gatewayCars);
+			var viewModelCars = _mapper.Map<IEnumerable<CarViewModel>>(gatewayCars);
+
+			foreach (var car in viewModelCars)
+			{
+				var datamuseResult = await _datamuseRepository.GetDatamuseWords(string.Join("+", car.Make.Model?.Split(' ')));
+
+				car.SimilarWords = string.Join(", ", datamuseResult?.OrderByDescending(x => x.Score).Select(x => x.Word) ?? new List<string>());
+			}
+
+			return viewModelCars;
 		}
 
-		public CarViewModel GetCar(int id)
+		public async Task<CarViewModel> GetCar(int id)
 		{
 			var gatewayCar = _carRepository.GetCar(id);
-			return _mapper.Map<CarViewModel>(gatewayCar);
+			var viewModelCar = _mapper.Map<CarViewModel>(gatewayCar);
+
+			var datamuseResult = await _datamuseRepository.GetDatamuseWords(string.Join("+", gatewayCar.Model.Split(' ')));
+
+			viewModelCar.SimilarWords = string.Join(", ", datamuseResult?.OrderByDescending(x => x.Score).Select(x => x.Word) ?? new List<string>());
+
+			return viewModelCar;
 		}
 
 		public void InsertCar(CarViewModel car)

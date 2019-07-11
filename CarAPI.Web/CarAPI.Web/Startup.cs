@@ -1,5 +1,6 @@
 using AutoMapper;
 using CarAPI.Web.Infrastructure.ExceptionHandling;
+using CarAPI.Web.Models;
 using CarAPI.Web.Registries;
 using CarAPI.Web.Repositories.Context;
 using Microsoft.AspNetCore.Builder;
@@ -30,6 +31,7 @@ namespace CarAPI.Web
 		public IServiceProvider ConfigureServices(IServiceCollection services)
 		{
 			services.AddAutoMapper(typeof(Startup));
+			services.AddHttpClient();
 
 			services.Configure<CookiePolicyOptions>(options =>
 			{
@@ -37,6 +39,8 @@ namespace CarAPI.Web
 				options.CheckConsentNeeded = context => true;
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 			});
+
+			services.Configure<ServerConfig>(Configuration.GetSection(nameof(ServerConfig)));
 
 			services.AddMvc(options =>
 				{

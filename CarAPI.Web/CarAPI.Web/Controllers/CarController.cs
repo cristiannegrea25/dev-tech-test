@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CarAPI.Web.Services;
 using CarAPI.Web.Models.Domain;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace CarAPI.Web.Controllers
 {
@@ -21,20 +22,20 @@ namespace CarAPI.Web.Controllers
 
 		[HttpGet]
 		[Route("getcars")]
-		public IEnumerable<CarViewModel> GetCars()
+		public async Task<IEnumerable<CarViewModel>> GetCars()
 		{
 			_logger.LogInformation("Getting cars...");
 
-			return _carService.GetAllCars();
+			return await _carService.GetAllCars();
 		}
 
 		[HttpGet]
 		[Route("getcar/{carId}")]
-		public CarViewModel GetCars(int carId)
+		public async Task<CarViewModel> GetCar(int carId)
 		{
 			_logger.LogInformation($"Getting car with Id {carId}...");
 
-			return _carService.GetCar(carId);
+			return await _carService.GetCar(carId);
 		}
 
 		[HttpPost]

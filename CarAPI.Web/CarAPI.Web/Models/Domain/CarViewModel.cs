@@ -11,5 +11,6 @@
 		public CarMake Make { get; set; }
 		public string Colour { get; set; }
 		public int Year { get; set; }
+		public string SimilarWords { get; set; }
 	}
 }

@@ -8,6 +8,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CarAPI.Web.Tests.Services
 {
@@ -15,6 +16,7 @@ namespace CarAPI.Web.Tests.Services
 	public class CarServiceTests
 	{
 		private Mock<ICarRepository> _carRepository;
+		private Mock<IDatamuseRepository> _datamuseRepository;
 		private Mock<IMapper> _mapper;
 		private CarService _classUnderTest;
 
@@ -23,6 +25,7 @@ namespace CarAPI.Web.Tests.Services
 		{
 			_mapper = new Mock<IMapper>();
 			_carRepository = new Mock<ICarRepository>();
+			_datamuseRepository = new Mock<IDatamuseRepository>();
 
 			_mapper.Setup(x => x.Map<CarViewModel>(It.IsAny<Car>()))
 				   .Returns(GetMockViewModelCars().First());
@@ -36,22 +39,22 @@ namespace CarAPI.Web.Tests.Services
 			_carRepository.Setup(x => x.GetCar(It.IsAny<int>()))
 						  .Returns(GetMockCarsData().First());
 
-			_classUnderTest = new CarService(_carRepository.Object, _mapper.Object);
+			_classUnderTest = new CarService(_carRepository.Object, _datamuseRepository.Object, _mapper.Object);
 		}
 
 		[Test]
-		public void Should_Retrieve_List_Of_Cars()
+		public async Task Should_Retrieve_List_Of_Cars()
 		{
-			var cars = _classUnderTest.GetAllCars();
+			var cars = await _classUnderTest.GetAllCars();
 
 			Assert.True(cars.Count().Equals(3));
 		}
 
 		[Test]
-		public void Should_Retrieve_Single_Car_Based_On_Id()
+		public async Task Should_Retrieve_Single_Car_Based_On_Id()
 		{
 			var carId = 1;
-			var car = _classUnderTest.GetCar(carId);
+			var car = await _classUnderTest.GetCar(carId);
 
 			Assert.NotNull(car);
 		}
