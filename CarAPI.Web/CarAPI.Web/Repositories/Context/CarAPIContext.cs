@@ -6,6 +6,10 @@ namespace CarAPI.Web.Repositories.Context
 {
 	public class CarAPIContext : DbContext
 	{
+		public CarAPIContext(DbContextOptions<CarAPIContext> options)
+			: base(options)
+		{ }
+
 		public DbSet<Car> Cars { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -21,7 +25,7 @@ namespace CarAPI.Web.Repositories.Context
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			// Map table names
-			modelBuilder.Entity<Car>().ToTable("Blogs", "test");
+			modelBuilder.Entity<Car>().ToTable("Cars", "CarAPISchema");
 			modelBuilder.Entity<Car>(entity =>
 			{
 				entity.HasKey(e => e.Id);
