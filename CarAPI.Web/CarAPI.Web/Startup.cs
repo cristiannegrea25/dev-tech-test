@@ -3,8 +3,8 @@ using CarAPI.Web.Infrastructure.ExceptionHandling;
 using CarAPI.Web.Registries;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -28,18 +28,20 @@ namespace CarAPI.Web
 		public IServiceProvider ConfigureServices(IServiceCollection services)
 		{
 			services.AddAutoMapper();
+
+			services.Configure<CookiePolicyOptions>(options =>
+			{
+				// This lambda determines whether user consent for non-essential cookies is needed for a given request.
+				options.CheckConsentNeeded = context => true;
+				options.MinimumSameSitePolicy = SameSiteMode.None;
+			});
+
 			services.AddMvc(options =>
 			{
 				var serviceProvider = services.BuildServiceProvider();
 				var logger = serviceProvider.GetService<Infrastructure.Logging.ILogger<UnhandledExceptionFilter>>();
 				options.Filters.Add(new UnhandledExceptionFilter(logger));
-			});
-
-			// In production, the Angular files will be served from this directory
-			services.AddSpaStaticFiles(configuration =>
-			{
-				configuration.RootPath = "ClientApp/dist";
-			});
+			}).SetCompatibilityVersion(CompatibilityVersion.Version_2_2); ;
 
 			var container = ConfigureIOC(services);
 			return container;
@@ -65,40 +67,22 @@ namespace CarAPI.Web
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
-				app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-				{
-					HotModuleReplacement = true
-				});
 			}
 			else
 			{
 				app.UseExceptionHandler("/Home/Error");
+				app.UseHsts();
 			}
 
+			app.UseHttpsRedirection();
 			app.UseStaticFiles();
+			app.UseCookiePolicy();
 
 			app.UseMvc(routes =>
 			{
 				routes.MapRoute(
 					name: "default",
 					template: "{controller=Home}/{action=Index}/{id?}");
-
-				routes.MapSpaFallbackRoute(
-					name: "spa-fallback",
-					defaults: new { controller = "Home", action = "Index" });
-			});
-
-			app.UseSpa(spa =>
-			{
-				// To learn more about options for serving an Angular SPA from ASP.NET Core,
-				// see https://go.microsoft.com/fwlink/?linkid=864501
-
-				spa.Options.SourcePath = "ClientApp";
-
-				if (env.IsDevelopment())
-				{
-					spa.UseAngularCliServer(npmScript: "start");
-				}
 			});
 		}
 	}
