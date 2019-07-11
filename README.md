@@ -53,3 +53,48 @@ You can use whatever online resources you want (aside from copy-pasting large ch
 You are encouraged to use any frameworks or libraries you feel comfortable with.
 
 You will be asked about the code you submit so you should be able to explain why every line is there.
+
+
+## How to run the application
+* Open the solution in Visual Studio
+* Restore packages
+* Run application 
+* Notes: 
+	* It will open a browser window, but the testing can be done using postman.
+	* I initially wanted to have a graphical table with CRUD operations included, but due to time limitations, this was not possible.
+	* The endpoints are as follow:
+	1. Get All Cars --> https://localhost:{portnumber}/api/car/getcars --> For me the port number was 44362
+		* Set postman method to GET
+	2. Get Car by Id --> https://localhost:44362/api/car/getcar/{carId} --> CarId can be any ID from previous inserted cards.
+		* Set postman method to GET
+	3. Insert car --> https://localhost:44362/api/car/insertcar
+	Body example: 
+	{
+		"Id": 2,
+		"Make": 
+			{ 
+			"Name": "test 2", 
+			"Model": "test"
+			},
+		"Colour": "test",
+		"Year": 1980
+	}
+		* Set postman method to POST
+		* Set Body to "Raw" and then select "JSON(application/json)" from the dropdown
+	4. Update car --> https://localhost:44362/api/car/updatecar
+	Body example: 
+	{
+		"Id": 2,
+		"Make": 
+			{ 
+			"Name": "test updated", 
+			"Model": "test"
+			},
+		"Colour": "test updated",
+		"Year": 1980
+	}
+		* Set postman method to PUT
+		* Set Body to "Raw" and then select "JSON(application/json)" from the dropdown
+	5. Delete car --> https://localhost:44362/api/car/deletecar/{carId} 
+		* CarId can be any ID from previous inserted cards.
+		* Set postman method to DELETE
