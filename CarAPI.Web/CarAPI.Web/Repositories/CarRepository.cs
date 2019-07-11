@@ -35,7 +35,7 @@ namespace CarAPI.Web.Repositories
 
 		public void UpdateCar(Car car)
 		{
-			_context.Entry(car).State = EntityState.Modified;
+			_context.Entry(car).State = EntityState.Detached;
 		}
 
 		public void DeleteCar(Car car)

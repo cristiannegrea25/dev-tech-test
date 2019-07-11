@@ -90,22 +90,19 @@ namespace CarAPI.Web.Tests.Services
 			var listOfCars = new List<CarViewModel> {
 				new CarViewModel {
 					Id = 1,
-					Make = "test Make",
-					Model = "test Model",
+					Make = new CarMake { Model = "test Make" },
 					Colour = "test Colour",
 					Year = DateTime.Now.Year
 				},
 				new CarViewModel {
 					Id = 2,
-					Make = "test Make 2",
-					Model = "test Model 2",
+					Make = new CarMake { Model = "test Make 2" },
 					Colour = "test Colour 2",
 					Year = DateTime.Now.Year
 				},
 				new CarViewModel {
 					Id = 3,
-					Make = "test Make 3",
-					Model = "test Model 3",
+					Make = new CarMake { Model = "test Make 3" },
 					Colour = "test Colour 3",
 					Year = DateTime.Now.Year
 				}

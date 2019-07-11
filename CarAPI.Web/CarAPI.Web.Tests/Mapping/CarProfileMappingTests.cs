@@ -34,8 +34,8 @@ namespace CarAPI.Web.Tests.Mapping
 
 			Assert.Multiple(() => {
 				Assert.AreEqual(viewModel.Id, gatewayModel.Id);
-				Assert.AreEqual(viewModel.Make, gatewayModel.Make);
-				Assert.AreEqual(viewModel.Model, gatewayModel.Model);
+				Assert.AreEqual(viewModel.Make.Name, gatewayModel.Make);
+				Assert.AreEqual(viewModel.Make.Model, gatewayModel.Model);
 				Assert.AreEqual(viewModel.Colour, gatewayModel.Colour);
 				Assert.AreEqual(viewModel.Year, gatewayModel.Year);
 			});
@@ -50,8 +50,8 @@ namespace CarAPI.Web.Tests.Mapping
 
 			Assert.Multiple(() => {
 				Assert.AreEqual(viewModel.Id, gatewayModel.Id);
-				Assert.AreEqual(viewModel.Make, gatewayModel.Make);
-				Assert.AreEqual(viewModel.Model, gatewayModel.Model);
+				Assert.AreEqual(viewModel.Make, gatewayModel.Make.Name);
+				Assert.AreEqual(viewModel.Model, gatewayModel.Make.Model);
 				Assert.AreEqual(viewModel.Colour, gatewayModel.Colour);
 				Assert.AreEqual(viewModel.Year, gatewayModel.Year);
 			});
