@@ -28,6 +28,15 @@ namespace CarAPI.Web.Controllers
 			return _carService.GetAllCars();
 		}
 
+		[HttpGet]
+		[Route("getcar/{carId}")]
+		public CarViewModel GetCars(int carId)
+		{
+			_logger.LogInformation($"Getting car with Id {carId}...");
+
+			return _carService.GetCar(carId);
+		}
+
 		[HttpPost]
 		[Route("insertcar")]
 		public void InsertCar([FromBody] CarViewModel car)
